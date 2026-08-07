@@ -4,12 +4,14 @@ import { renderForgotPasswordEmail } from "../templates/forgotPassword.template.
 import { renderMemberAddedEmail } from "../templates/memberAdded.template.js";
 import { renderTaskCreatedEmail } from "../templates/taskCreated.template.js";
 import { renderTeamCreatedEmail } from "../templates/teamCreated.template.js";
+import { renderWelcomeEmail } from "../templates/welcome.template.js";
 
 import type {
   ForgotPasswordEvent,
   MemberAddedEvent,
   TaskCreatedEvent,
   TeamCreatedEvent,
+  WelcomeEmailEvent,
 } from "../validations/event.schemas.js";
 
 import type { MailerService } from "./mailer.service.js";
@@ -47,6 +49,11 @@ export class NotificationService {
 
   async sendForgotPasswordEmail(event: ForgotPasswordEvent): Promise<void> {
     const { subject, html } = renderForgotPasswordEmail(event);
+    await this.dispatch(event.to, event.from, subject, html);
+  }
+
+  async sendWelcomeEmail(event: WelcomeEmailEvent): Promise<void> {
+    const { subject, html } = renderWelcomeEmail(event);
     await this.dispatch(event.to, event.from, subject, html);
   }
 

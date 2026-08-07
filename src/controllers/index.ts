@@ -5,6 +5,7 @@ import { createForgotPasswordController } from "./forgotPassword.controller.js";
 import { createMemberAddedController } from "./memberAdded.controller.js";
 import { createTaskCreatedController } from "./taskCreated.controller.js";
 import { createTeamCreatedController } from "./teamCreated.controller.js";
+import { WelcomeEmailController } from "./welcome.controller.js";
 
 export interface EventControllerDefinition {
   routingKey: string;
@@ -33,6 +34,11 @@ export function buildControllers(notificationService: NotificationService): Even
       routingKey: ROUTING_KEYS.FORGOT_PASSWORD,
       queueName: QUEUE_NAMES.FORGOT_PASSWORD,
       handle: createForgotPasswordController(notificationService),
+    },
+    {
+      routingKey: ROUTING_KEYS.WELCOME_EMAIL,
+      queueName: QUEUE_NAMES.WELCOME_EMAIL,
+      handle: WelcomeEmailController(notificationService),
     },
   ];
 }

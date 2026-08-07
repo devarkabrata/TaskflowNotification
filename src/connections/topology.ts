@@ -6,6 +6,7 @@ export const ROUTING_KEYS = {
   MEMBER_ADDED: "email.member-added",
   TEAM_CREATED: "email.team-created",
   FORGOT_PASSWORD: "email.forgot-password",
+  WELCOME_EMAIL: "email.welcome",
 } as const;
 
 export const QUEUE_NAMES = {
@@ -13,6 +14,7 @@ export const QUEUE_NAMES = {
   MEMBER_ADDED: "email.member-added.queue",
   TEAM_CREATED: "email.team-created.queue",
   FORGOT_PASSWORD: "email.forgot-password.queue",
+  WELCOME_EMAIL: "email.welcome.queue",
 } as const;
 
 export async function assertTopology(channel: Channel, amqp: AppConfig["amqp"]): Promise<void> {
@@ -27,6 +29,7 @@ export async function assertTopology(channel: Channel, amqp: AppConfig["amqp"]):
     [QUEUE_NAMES.MEMBER_ADDED, ROUTING_KEYS.MEMBER_ADDED],
     [QUEUE_NAMES.TEAM_CREATED, ROUTING_KEYS.TEAM_CREATED],
     [QUEUE_NAMES.FORGOT_PASSWORD, ROUTING_KEYS.FORGOT_PASSWORD],
+    [QUEUE_NAMES.WELCOME_EMAIL, ROUTING_KEYS.WELCOME_EMAIL],
   ];
 
   for (const [queueName, routingKey] of queueRoutingKeyPairs) {

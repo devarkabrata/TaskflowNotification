@@ -30,7 +30,13 @@ export const forgotPasswordSchema = baseEventSchema.extend({
   expiresInMinutes: z.number().int().positive().default(30),
 });
 
+export const welcomeEmailSchema = baseEventSchema.extend({
+  userName: z.string(),
+  welcomeMessage: z.string(),
+});
+
 export type TaskCreatedEvent = z.infer<typeof taskCreatedSchema>;
 export type MemberAddedEvent = z.infer<typeof memberAddedSchema>;
 export type TeamCreatedEvent = z.infer<typeof teamCreatedSchema>;
 export type ForgotPasswordEvent = z.infer<typeof forgotPasswordSchema>;
+export type WelcomeEmailEvent = z.infer<typeof welcomeEmailSchema>;
