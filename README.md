@@ -1,6 +1,6 @@
 # Notification Service
 
-Email notification microservice for Taskflow. It consumes events published by other services (including the .NET `TaskFlowBackend` app) onto a shared AMQP broker, and sends transactional emails via SMTP. It does **not** expose any endpoint for publishing events — it is a pure consumer.
+Email notification microservice for Taskflow. It consumes events published by other services (including the .NET `TaskFlowBackend` app) onto a shared AMQP broker, and sends transactional emails via SendGrid. It does **not** expose any endpoint for publishing events — it is a pure consumer.
 
 ## Architecture
 
@@ -55,7 +55,7 @@ Each of the 4 queues is declared durable with the argument `x-dead-letter-exchan
 src/
   config/       env loading + validation (Zod)
   connections/  AMQP connection manager, topology (exchange/queue/DLX declarations),
-                SMTP transporter, generic consume/ack/nack runner
+                SendGrid mail transporter, generic consume/ack/nack runner
   controllers/  one per event type — parse JSON, validate, delegate to services/
   services/     MailerService (send + retry), NotificationService (template selection + dispatch)
   templates/    subject + HTML renderers, one per event type
@@ -72,7 +72,7 @@ Dependency injection is manual (no container library): `server.ts` is the single
 ```bash
 cd Notification
 npm install
-cp .env.example .env    # then fill in AMQP_URL / SMTP_* / MAIL_FROM
+cp .env.example .env    # then fill in AMQP_URL / SENDGRID_API_KEY / MAIL_FROM
 npm run dev             # tsx watch src/server.ts
 ```
 
@@ -106,7 +106,7 @@ npm run publish:test -- email.team-created
 npm run publish:test -- email.forgot-password
 ```
 
-While `npm run dev` is running, you should see log lines for topology assertion, each consumer starting, and then a log line per message consumed/acked. Check your SMTP inbox (or a test SMTP tool like Mailtrap/Ethereal) for the resulting email.
+While `npm run dev` is running, you should see log lines for topology assertion, each consumer starting, and then a log line per message consumed/acked. Check the destination inbox (or your SendGrid Activity Feed) for the resulting email.
 
 To exercise the dead-letter path, publish an invalid payload (e.g. edit `test-publisher.ts` to omit a required field, or use the RabbitMQ management UI at `http://localhost:15672` to publish a malformed message directly to one of the queues) — it will be nacked without requeue and should appear in `email.dead-letter.queue`.
 

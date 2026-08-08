@@ -1,9 +1,5 @@
 import { z } from "zod";
 
-const booleanFromString = z
-  .string()
-  .transform((value) => value.trim().toLowerCase() === "true");
-
 export const envSchema = z.object({
   PORT: z.coerce.number().int().positive().default(4000),
 
@@ -15,11 +11,7 @@ export const envSchema = z.object({
   AMQP_CONNECT_RETRY_DELAY_MS: z.coerce.number().int().positive().default(3000),
   AMQP_RECONNECT_DELAY_MS: z.coerce.number().int().positive().default(5000),
  
-  SMTP_HOST: z.string().min(1, "SMTP_HOST is required"),
-  SMTP_PORT: z.coerce.number().int().positive(),
-  SMTP_SECURE: booleanFromString.default(false),
-  SMTP_USER: z.string().default(""),
-  SMTP_PASS: z.string().default(""),
+  SENDGRID_API_KEY: z.string().min(1, "SENDGRID_API_KEY is required"),
   MAIL_FROM: z.string().min(1, "MAIL_FROM is required"),
 
   MAX_RETRY_ATTEMPTS: z.coerce.number().int().positive().default(3),

@@ -1,4 +1,3 @@
-import dns from "node:dns";
 import { createApp } from "./app.js";
 import { loadConfig } from "./config/env.js";
 import { AmqpConnectionManager } from "./connections/amqp.connection.js";
@@ -10,16 +9,12 @@ import { createLogger } from "./helpers/logger.js";
 import { MailerService } from "./services/mailer.service.js";
 import { NotificationService } from "./services/notification.service.js";
 
-// Render's outbound network prefers IPv6, which some SMTP providers route unreliably,
-// causing sendMail to hang until ETIMEDOUT. Prefer IPv4 results for all DNS lookups.
-dns.setDefaultResultOrder("ipv4first");
-
 async function main(): Promise<void> {
   const config = loadConfig();
   const logger = createLogger("notification-service");
 
   // create mail transporter
-  const transporter = createMailTransporter(config.smtp);
+  const transporter = createMailTransporter(config.sendgrid.apiKey);
 
   // Initialize services
   const mailerService = new MailerService(transporter, config.retry, logger);

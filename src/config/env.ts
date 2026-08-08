@@ -12,12 +12,8 @@ export interface AppConfig {
     connectRetryDelayMs: number;
     reconnectDelayMs: number;
   };
-  smtp: {
-    host: string;
-    port: number;
-    secure: boolean;
-    user: string;
-    pass: string;
+  sendgrid: {
+    apiKey: string;
   };
   mail: {
     from: string;
@@ -52,12 +48,8 @@ export function loadConfig(): AppConfig {
       connectRetryDelayMs: env.AMQP_CONNECT_RETRY_DELAY_MS,
       reconnectDelayMs: env.AMQP_RECONNECT_DELAY_MS,
     },
-    smtp: {
-      host: env.SMTP_HOST,
-      port: env.SMTP_PORT,
-      secure: env.SMTP_SECURE,
-      user: env.SMTP_USER,
-      pass: env.SMTP_PASS,
+    sendgrid: {
+      apiKey: env.SENDGRID_API_KEY,
     },
     mail: {
       from: env.MAIL_FROM,
