@@ -3,6 +3,7 @@ import type { ServiceResult } from "../helpers/response.js";
 import type { NotificationService } from "../services/notification.service.js";
 import { createForgotPasswordController } from "./forgotPassword.controller.js";
 import { createMemberAddedController } from "./memberAdded.controller.js";
+import { OTPEmailController } from "./otp.controller.js";
 import { createTaskCreatedController } from "./taskCreated.controller.js";
 import { createTeamCreatedController } from "./teamCreated.controller.js";
 import { WelcomeEmailController } from "./welcome.controller.js";
@@ -39,6 +40,11 @@ export function buildControllers(notificationService: NotificationService): Even
       routingKey: ROUTING_KEYS.WELCOME_EMAIL,
       queueName: QUEUE_NAMES.WELCOME_EMAIL,
       handle: WelcomeEmailController(notificationService),
+    },
+    {
+      routingKey: ROUTING_KEYS.OTP_EMAIL,
+      queueName: QUEUE_NAMES.OTP_EMAIL,
+      handle: OTPEmailController(notificationService),
     },
   ];
 }

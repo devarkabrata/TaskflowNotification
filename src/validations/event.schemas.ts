@@ -35,8 +35,16 @@ export const welcomeEmailSchema = baseEventSchema.extend({
   welcomeMessage: z.string(),
 });
 
+export const OTPEmailSchema = baseEventSchema.extend({
+  description: z.string(),
+  otp: z.string().length(6).regex(/^\d+$/),
+  for: z.string(),
+  ttl: z.number().int().positive()
+});
+
 export type TaskCreatedEvent = z.infer<typeof taskCreatedSchema>;
 export type MemberAddedEvent = z.infer<typeof memberAddedSchema>;
 export type TeamCreatedEvent = z.infer<typeof teamCreatedSchema>;
 export type ForgotPasswordEvent = z.infer<typeof forgotPasswordSchema>;
 export type WelcomeEmailEvent = z.infer<typeof welcomeEmailSchema>;
+export type OTPEmailEvent = z.infer<typeof OTPEmailSchema>;

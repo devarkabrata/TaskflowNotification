@@ -2,6 +2,7 @@ import type { Logger } from "../helpers/logger.js";
 
 import { renderForgotPasswordEmail } from "../templates/forgotPassword.template.js";
 import { renderMemberAddedEmail } from "../templates/memberAdded.template.js";
+import { renderOTPEmail } from "../templates/otp.template.js";
 import { renderTaskCreatedEmail } from "../templates/taskCreated.template.js";
 import { renderTeamCreatedEmail } from "../templates/teamCreated.template.js";
 import { renderWelcomeEmail } from "../templates/welcome.template.js";
@@ -9,6 +10,7 @@ import { renderWelcomeEmail } from "../templates/welcome.template.js";
 import type {
   ForgotPasswordEvent,
   MemberAddedEvent,
+  OTPEmailEvent,
   TaskCreatedEvent,
   TeamCreatedEvent,
   WelcomeEmailEvent,
@@ -54,6 +56,11 @@ export class NotificationService {
 
   async sendWelcomeEmail(event: WelcomeEmailEvent): Promise<void> {
     const { subject, html } = renderWelcomeEmail(event);
+    await this.dispatch(event.to, event.from, subject, html);
+  }
+
+  async sendOTPEmail(event: OTPEmailEvent): Promise<void> {
+    const { subject, html } = renderOTPEmail(event);
     await this.dispatch(event.to, event.from, subject, html);
   }
 
