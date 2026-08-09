@@ -42,9 +42,17 @@ export const OTPEmailSchema = baseEventSchema.extend({
   ttl: z.number().int().positive()
 });
 
+export const InviteMemberSchema = baseEventSchema.extend({
+  workspaceName: z.string(),
+  invitedBy: z.string(),
+  userName: z.string(),
+  inviteLink: z.string().url(),
+});
+
 export type TaskCreatedEvent = z.infer<typeof taskCreatedSchema>;
 export type MemberAddedEvent = z.infer<typeof memberAddedSchema>;
 export type TeamCreatedEvent = z.infer<typeof teamCreatedSchema>;
 export type ForgotPasswordEvent = z.infer<typeof forgotPasswordSchema>;
 export type WelcomeEmailEvent = z.infer<typeof welcomeEmailSchema>;
 export type OTPEmailEvent = z.infer<typeof OTPEmailSchema>;
+export type InviteMemberEvent = z.infer<typeof InviteMemberSchema>;

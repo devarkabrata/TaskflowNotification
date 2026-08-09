@@ -2,6 +2,7 @@ import { QUEUE_NAMES, ROUTING_KEYS } from "../connections/topology.js";
 import type { ServiceResult } from "../helpers/response.js";
 import type { NotificationService } from "../services/notification.service.js";
 import { createForgotPasswordController } from "./forgotPassword.controller.js";
+import { createInviteMemberController } from "./inviteMember.controller.js";
 import { createMemberAddedController } from "./memberAdded.controller.js";
 import { OTPEmailController } from "./otp.controller.js";
 import { createTaskCreatedController } from "./taskCreated.controller.js";
@@ -45,6 +46,11 @@ export function buildControllers(notificationService: NotificationService): Even
       routingKey: ROUTING_KEYS.OTP_EMAIL,
       queueName: QUEUE_NAMES.OTP_EMAIL,
       handle: OTPEmailController(notificationService),
+    },
+    {
+      routingKey: ROUTING_KEYS.INVITE_MEMBER,
+      queueName: QUEUE_NAMES.INVITE_MEMBER,
+      handle: createInviteMemberController(notificationService),
     },
   ];
 }
