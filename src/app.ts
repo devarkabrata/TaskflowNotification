@@ -11,5 +11,9 @@ export function createApp(): Express {
     res.status(200).json(success("Notification service is healthy", { uptime: process.uptime() }));
   });
 
+  app.get("/health-test", (_req, res) => {
+    res.status(200).json(success("Notification service is healthy", { uptime: process.uptime() }));
+  });
+
   return app;
 }
